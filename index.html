@@ -1,563 +1,148 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <meta name="theme-color" content="#080810" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover" />
     <meta name="referrer" content="no-referrer" />
-    <title>
-      SPORTZONE · Hybrid Player
-    </title>
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <style type="text/css">
+      * {user-select: auto !important; -webkit-user-select: auto !important;}
+    </style>
     <script src="https://cdn.jwplayer.com/libraries/IDzF9Zmk.js">
     </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/shaka-player.ui.min.js">
-    </script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/controls.min.css" />
     <style>
-      :root{color-scheme:dark;--bg:#000;--line:#ffffff2b}
-*{box-sizing:border-box}
-html,body{width:100%;height:100%;min-height:100%;margin:0;padding:0;overflow:hidden;background:#000;color:#fff;font-family:system-ui,-apple-system,&#34;Segoe UI&#34;,sans-serif}
-.player-shell,.engine-container{position:fixed;inset:0;width:100vw;height:100vh;height:100dvh;background:#000;overflow:hidden}
-.engine-container{display:none}
-#shaka-container{display:none}
-#jw-container{display:none}
-#shaka-container video{position:absolute!important;inset:0!important;display:block!important;width:100vw!important;height:100vh!important;height:100dvh!important;min-width:100%!important;min-height:100%!important;max-width:none!important;max-height:none!important;object-fit:contain!important;object-position:center center!important;background:#000}
-#jw-container .jwplayer{position:absolute!important;inset:0!important;width:100%!important;height:100%!important}
-#jw-container video{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;min-width:0!important;min-height:0!important;max-width:none!important;max-height:none!important;object-fit:contain!important;background:#000}
-#shaka-container:fullscreen,#shaka-container:-webkit-full-screen,#jw-container:fullscreen,#jw-container:-webkit-full-screen{position:fixed!important;inset:0!important;width:100vw!important;height:100vh!important;height:100dvh!important;padding:0!important;margin:0!important;background:#000!important;overflow:hidden!important}
-#shaka-container video.fit-cover,#jw-container.fit-cover video{object-fit:cover!important;object-position:center center!important}
-#shaka-container video.fit-stretch,#jw-container.fit-stretch video{object-fit:fill!important;object-position:center center!important}
-#shaka-container.full-cover video,#jw-container.full-cover video{object-fit:cover!important}
-#shaka-container.full-stretch video,#jw-container.full-stretch video{object-fit:fill!important}
-.video-fit-btn{position:absolute;top:calc(10px + env(safe-area-inset-top));right:calc(10px + env(safe-area-inset-right));z-index:10000;border:1px solid rgba(255,255,255,.28);background:rgba(0,0,0,.68);color:#fff;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-radius:10px;padding:9px 12px;min-width:105px;font-size:12px;font-weight:700;letter-spacing:.3px;cursor:pointer;user-select:none;-webkit-tap-highlight-color:transparent}
-.video-fit-btn:active{transform:scale(.96)}
-.video-fit-btn.controls-hidden{opacity:0!important;visibility:hidden!important;pointer-events:none!important}
-.player-message{position:absolute;z-index:10001;left:50%;bottom:calc(65px + env(safe-area-inset-bottom));transform:translateX(-50%);max-width:calc(100% - 30px);padding:10px 14px;border:1px solid var(--line);border-radius:10px;background:#101522ed;color:#e7edf7;font-size:12px;text-align:center;display:none}
-.player-message.show{display:block}
-
-/* JW Player aspect-ratio control: custom button styling is handled by JW, video fit by this shared class. */
-#jw-container video.fit-contain{object-fit:contain!important;object-position:center center!important}
-#jw-container video.fit-cover{object-fit:cover!important;object-position:center center!important}
-#jw-container video.fit-stretch{object-fit:fill!important;object-position:center center!important}
-#jw-container .jw-button-container .jw-icon.aspect-button{background-size:contain;background-position:center;background-repeat:no-repeat}
-@media(max-width:600px){.video-fit-btn{top:calc(8px + env(safe-area-inset-top));right:calc(8px + env(safe-area-inset-right));min-width:94px;padding:8px 10px;font-size:11px;border-radius:9px}.player-message{font-size:11px;bottom:calc(60px + env(safe-area-inset-bottom))}}
+      *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;height:100%;background:#000;overflow:hidden;font-family:&#39;Segoe UI&#39;,Roboto,Helvetica,Arial,sans-serif;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+#overlay{position:fixed;inset:0;background:#0a0a0a;z-index:9999;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px}
+#overlay svg{animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+#overlay p{color:#505050;font-size:12px;letter-spacing:.5px;text-align:center;padding:0 24px;font-weight:500}
+#pc{position:fixed;inset:0;background:#000;display:flex;align-items:center;justify-content:center;touch-action:manipulation}
+#player{width:100%;height:100%}
+#status{position:fixed;top:max(14px,env(safe-area-inset-top));right:12%;transform:translateY(-10px);z-index:9997;display:flex;align-items:center;gap:7px;padding:6px 15px 6px 11px;background:rgba(10,10,10,.92);border:1px solid rgba(255,255,255,.07);font-size:11.5px;font-weight:500;letter-spacing:.2px;border-radius:24px;pointer-events:none;opacity:0;transition:opacity .25s ease,transform .25s ease;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);white-space:nowrap;max-width:calc(100vw - 32px);overflow:hidden;box-shadow:0 2px 14px rgba(0,0,0,.45)}
+#status.show{opacity:1;transform:translateY(0)}
+.st-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;display:inline-block}
+#status.ok{color:#c0c0c0}
+#status.ok .st-dot{background:#60a5fa}
+#status.live{color:#c8c8c8}
+#status.live .st-dot{background:#22d3a0;animation:dot-pulse 2s ease-in-out infinite}
+#status.warn{color:#fcd34d}
+#status.warn .st-dot{background:#fb923c;animation:dot-pulse 1s ease-in-out infinite}
+#status.err{color:#fca5a5}
+#status.err .st-dot{background:#f87171}
+@keyframes dot-pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.35;transform:scale(.55)}}
     </style>
-    <script data-cfasync="false" src="https://capitalhospitals.org/1/b2962c08c3ad508acb1f5844f2e0ab8c">
-    </script>
   </head>
   <body>
-    <main class="player-shell" id="player-shell">
-      <div id="shaka-container" class="engine-container">
-        <video id="shaka-video" autoplay="" playsinline="" preload="auto">
-        </video>
-      </div>
-      <div id="jw-container" class="engine-container" aria-label="JW HLS player">
-      </div>
-      <button id="videoFitBtn" class="video-fit-btn" type="button" aria-label="Change video fit mode" title="Change video fit mode">
-        FIT: CONTAIN
-      </button>
-      <div id="playerMessage" class="player-message" role="status">
-      </div>
-    </main>
-    <script>
-      (() =&gt; {
-  &#34;use strict&#34;;
-
-  const params = new URLSearchParams(location.search);
-  const sourceUrl = params.get(&#34;url&#34;) || params.get(&#34;src&#34;) || params.get(&#34;stream&#34;) || &#34;&#34;;
-  const streamName = params.get(&#34;name&#34;) || &#34;&#34;;
-  const eventTitle = params.get(&#34;title&#34;) || &#34;&#34;;
-  const category = params.get(&#34;category&#34;) || &#34;&#34;;
-  const kid = (params.get(&#34;kid&#34;) || params.get(&#34;keyId&#34;) || &#34;&#34;).trim();
-  const key = (params.get(&#34;key&#34;) || &#34;&#34;).trim();
-  const explicitType = (params.get(&#34;type&#34;) || &#34;&#34;).toLowerCase();
-
-  const shell = document.getElementById(&#34;player-shell&#34;);
-  const shakaContainer = document.getElementById(&#34;shaka-container&#34;);
-  const jwContainer = document.getElementById(&#34;jw-container&#34;);
-  const shakaVideo = document.getElementById(&#34;shaka-video&#34;);
-  const fitButton = document.getElementById(&#34;videoFitBtn&#34;);
-  const messageEl = document.getElementById(&#34;playerMessage&#34;);
-
-  let shakaPlayer = null;
-  let jwPlayer = null;
-  let activeEngine = &#34;&#34;;
-  let retryCount = 0;
-  let retryTimer = null;
-  let stopped = false;
-  let fitModeIndex = 0;
-  let fitButtonHideTimer = null;
-  let fitButtonStarted = false;
-  const FIT_BUTTON_HIDE_DELAY = 3000;
-
-  function showMessage(message) {
-    messageEl.textContent = message;
-    messageEl.classList.add(&#34;show&#34;);
-  }
-  function hideMessage() {
-    messageEl.textContent = &#34;&#34;;
-    messageEl.classList.remove(&#34;show&#34;);
-  }
-  function validHttpUrl(value) {
-    try {
-      const parsed = new URL(value, location.href);
-      return [&#34;http:&#34;, &#34;https:&#34;].includes(parsed.protocol) ? parsed.href : &#34;&#34;;
-    } catch (_) { return &#34;&#34;; }
-  }
-  function classifyStream(url) {
-    if (explicitType.includes(&#34;hls&#34;)) return &#34;hls&#34;;
-    if (explicitType.includes(&#34;dash&#34;) || explicitType.includes(&#34;mpd&#34;)) return &#34;dash&#34;;
-    let path = &#34;&#34;;
-    try { path = new URL(url).pathname.toLowerCase(); } catch (_) { path = String(url).toLowerCase(); }
-    if (/\.m3u8$/i.test(path)) return &#34;hls&#34;;
-    if (/\.mpd$/i.test(path)) return &#34;dash&#34;;
-    // If the URL has no recognizable extension, honor an optional type parameter;
-    // otherwise default to DASH to keep DRM streams on Shaka.
-    return &#34;dash&#34;;
-  }
-
-  // The same three-mode aspect-ratio / fit function is shared by both engines.
-  const fitModes = [
-    {key:&#34;contain&#34;, label:&#34;FIT: CONTAIN&#34;, hint:&#34;Original / no crop&#34;},
-    {key:&#34;cover&#34;, label:&#34;FULL: COVER&#34;, hint:&#34;Fill screen / crop edges&#34;},
-    {key:&#34;stretch&#34;, label:&#34;FULL: STRETCH&#34;, hint:&#34;Fill screen / no black bars&#34;}
-  ];
-
-  async function enterPlayerFullscreen() {
-    try {
-      const active = document.fullscreenElement || document.webkitFullscreenElement;
-      if (!active) {
-        const target = activeEngine === &#34;hls&#34; ? jwContainer : shakaContainer;
-        if (target.requestFullscreen) await target.requestFullscreen({navigationUI:&#34;hide&#34;});
-        else if (target.webkitRequestFullscreen) target.webkitRequestFullscreen();
-        else if (shakaVideo.webkitEnterFullscreen) shakaVideo.webkitEnterFullscreen();
-      }
-    } catch (_) {}
-    try {
-      if (screen.orientation &amp;&amp; screen.orientation.lock) await screen.orientation.lock(&#34;landscape&#34;).catch(()=&gt;{});
-    } catch (_) {}
-  }
-
-  function applyFitMode(index, requestFullscreen = false) {
-    fitModeIndex = (index + fitModes.length) % fitModes.length;
-    const mode = fitModes[fitModeIndex];
-    [shakaVideo].forEach(el =&gt; {
-      el.classList.remove(&#34;fit-contain&#34;,&#34;fit-cover&#34;,&#34;fit-stretch&#34;);
-      el.classList.add(&#34;fit-&#34; + mode.key);
-    });
-    [shakaContainer,jwContainer].forEach(el =&gt; {
-      el.classList.remove(&#34;fit-contain&#34;,&#34;fit-cover&#34;,&#34;fit-stretch&#34;,&#34;full-cover&#34;,&#34;full-stretch&#34;);
-      el.classList.add(&#34;fit-&#34; + mode.key);
-      if (mode.key === &#34;cover&#34;) el.classList.add(&#34;full-cover&#34;);
-      if (mode.key === &#34;stretch&#34;) el.classList.add(&#34;full-stretch&#34;);
-    });
-    fitButton.textContent = mode.label;
-    fitButton.title = mode.hint;
-    fitButton.setAttribute(&#34;aria-label&#34;, mode.hint);
-
-    const jwVideo = jwContainer.querySelector(&#34;video&#34;);
-    if (jwVideo) {
-      jwVideo.style.objectFit = mode.key === &#34;cover&#34; ? &#34;cover&#34; : mode.key === &#34;stretch&#34; ? &#34;fill&#34; : &#34;contain&#34;;
-      jwVideo.style.objectPosition = &#34;center center&#34;;
-    }
-    void shakaVideo.offsetWidth;
-    if (requestFullscreen &amp;&amp; mode.key !== &#34;contain&#34;) enterPlayerFullscreen();
-  }
-
-  fitButton.addEventListener(&#34;click&#34;, ev =&gt; {
-    ev.preventDefault();
-    ev.stopPropagation();
-
-    // The floating fit button belongs to Shaka only.
-    if (activeEngine === &#34;hls&#34;) return;
-
-    const next = fitModeIndex + 1;
-    applyFitMode(next, fitModes[(next + fitModes.length) % fitModes.length].key !== &#34;contain&#34;);
-    showFitButton();
-  });
-
-  function showFitButton() {
-    fitButton.classList.remove(&#34;controls-hidden&#34;);
-    clearTimeout(fitButtonHideTimer);
-    fitButtonHideTimer = setTimeout(() =&gt; fitButton.classList.add(&#34;controls-hidden&#34;), FIT_BUTTON_HIDE_DELAY);
-  }
-  function startFitButtonAutoHide() {
-    if (fitButtonStarted) return;
-    fitButtonStarted = true;
-    showFitButton();
-  }
-  shell.addEventListener(&#34;pointerdown&#34;, () =&gt; {
-    if (activeEngine === &#34;dash&#34;) showFitButton();
-  }, {passive:true});
-  shell.addEventListener(&#34;touchstart&#34;, () =&gt; {
-    if (activeEngine === &#34;dash&#34;) showFitButton();
-  }, {passive:true});
-  fitButton.addEventListener(&#34;pointerdown&#34;, ev =&gt; {ev.stopPropagation();if(activeEngine===&#34;dash&#34;)showFitButton();},{passive:true});
-  fitButton.addEventListener(&#34;touchstart&#34;, ev =&gt; {ev.stopPropagation();if(activeEngine===&#34;dash&#34;)showFitButton();},{passive:true});
-  shakaVideo.addEventListener(&#34;playing&#34;, startFitButtonAutoHide);
-  document.addEventListener(&#34;fullscreenchange&#34;, () =&gt; requestAnimationFrame(() =&gt; applyFitMode(fitModeIndex, false)));
-  document.addEventListener(&#34;webkitfullscreenchange&#34;, () =&gt; requestAnimationFrame(() =&gt; applyFitMode(fitModeIndex, false)));
-  applyFitMode(0);
-
-  function showEngine(engine) {
-    activeEngine = engine;
-    shakaContainer.style.display = engine === &#34;dash&#34; ? &#34;block&#34; : &#34;none&#34;;
-    jwContainer.style.display = engine === &#34;hls&#34; ? &#34;block&#34; : &#34;none&#34;;
-
-    // Top-right button is only for Shaka. JW has its own aspect button near Settings.
-    fitButton.style.display = engine === &#34;dash&#34; ? &#34;block&#34; : &#34;none&#34;;
-    applyFitMode(fitModeIndex, false);
-  }
-
-  function clearJW() {
-    clearTimeout(retryTimer);
-    if (jwPlayer &amp;&amp; typeof jwPlayer.remove === &#34;function&#34;) {
-      try { jwPlayer.remove(); } catch (_) {}
-    }
-    jwPlayer = null;
-    jwContainer.innerHTML = &#34;&#34;;
-  }
-
-  function startJW(url) {
-    if (stopped) return;
-    if (typeof window.jwplayer !== &#34;function&#34;) {
-      showMessage(&#34;JW Player library failed to load.&#34;);
-      return;
-    }
-    clearJW();
-    showEngine(&#34;hls&#34;);
-    jwContainer.innerHTML = &#39;&lt;div id=&#34;jw-hls-instance&#34; style=&#34;position:absolute;inset:0;width:100%;height:100%&#34;&gt;&lt;/div&gt;&#39;;
-    jwPlayer = window.jwplayer(&#34;jw-hls-instance&#34;).setup({
-      file: url,                 // Direct HLS URL: no PHP proxy
-      width: &#34;100%&#34;,
-      height: &#34;100%&#34;,
-      aspectratio: &#34;16:9&#34;,
-      autostart: true,
-      mute: true,
-      controls: true,
-      stretching: &#34;uniform&#34;,
-      displaytitle: false,
-      displaydescription: false,
-      preload: &#34;auto&#34;,
-      playbackRateControls: true,
-      skin: {name:&#34;seven&#34;}
-    });
-
-    // Keep the hybrid player&#39;s shared CONTAIN/COVER/STRETCH fit mode and
-    // add a visible JW toolbar button to cycle through those same modes.
-    const isPC =
-      !/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) &amp;&amp;
-      window.matchMedia(&#34;(pointer: fine)&#34;).matches &amp;&amp;
-      window.innerWidth &gt; 768;
-    const jwModes = [&#34;contain&#34;, &#34;cover&#34;, &#34;stretch&#34;];
-    let jwModeIndex = fitModeIndex;
-
-    function syncJWFitMode(index) {
-      jwModeIndex = (index + jwModes.length) % jwModes.length;
-      // Keep the shared mode state in sync without showing/using Shaka&#39;s top button.
-      fitModeIndex = jwModeIndex;
-      const mode = jwModes[jwModeIndex];
-      jwContainer.classList.remove(&#34;fit-contain&#34;, &#34;fit-cover&#34;, &#34;fit-stretch&#34;, &#34;full-cover&#34;, &#34;full-stretch&#34;);
-      jwContainer.classList.add(&#34;fit-&#34; + mode);
-      if (mode === &#34;cover&#34;) jwContainer.classList.add(&#34;full-cover&#34;);
-      if (mode === &#34;stretch&#34;) jwContainer.classList.add(&#34;full-stretch&#34;);
-
-      const video = jwContainer.querySelector(&#34;video&#34;);
-      if (video) {
-        video.classList.remove(&#34;fit-contain&#34;, &#34;fit-cover&#34;, &#34;fit-stretch&#34;);
-        video.classList.add(&#34;fit-&#34; + mode);
-        video.style.objectFit = mode === &#34;cover&#34; ? &#34;cover&#34; : mode === &#34;stretch&#34; ? &#34;fill&#34; : &#34;contain&#34;;
-        video.style.objectPosition = &#34;center center&#34;;
-      }
-    }
-
-    jwPlayer.on(&#34;ready&#34;, () =&gt; {
-      if (!jwPlayer || stopped) return;
-
-      try {
-        jwPlayer.addButton(
-          &#34;https://i.ibb.co/4wPT214r/frame.png&#34;,
-          &#34;Aspect Ratio: &#34; + fitModes[jwModeIndex].label,
-          () =&gt; {
-            syncJWFitMode(jwModeIndex + 1);
-          },
-          &#34;aspect-button&#34;
-        );
-      } catch (error) {
-        console.warn(&#34;Could not add JW aspect-ratio button:&#34;, error);
-      }
-
-      syncJWFitMode(fitModeIndex);
-      applyFitMode(fitModeIndex, false);
-      startFitButtonAutoHide();
-    });
-
-    jwPlayer.on(&#34;play&#34;, () =&gt; {
-      retryCount = 0;
-      hideMessage();
-      startFitButtonAutoHide();
-    });
-    jwPlayer.on(&#34;firstFrame&#34;, hideMessage);
-    jwPlayer.on(&#34;buffer&#34;, () =&gt; showMessage(&#34;Buffering…&#34;));
-    jwPlayer.on(&#34;error&#34;, event =&gt; {
-      if (stopped) return;
-      console.warn(&#34;JW HLS playback error:&#34;, event);
-      showMessage(&#34;HLS playback error. Retrying…&#34;);
-      if (retryCount &gt;= 3) {
-        showMessage(&#34;HLS failed after 3 retries. Check the direct stream URL, CORS and source availability.&#34;);
-        return;
-      }
-      retryCount++;
-      clearTimeout(retryTimer);
-      retryTimer = setTimeout(() =&gt; {
-        if (!stopped) startJW(url);
-      }, retryCount * 1500);
-    });
-  }
-
-  async function startShaka(url) {
-    showEngine(&#34;dash&#34;);
-    hideMessage();
-    if (!window.shaka) throw new Error(&#34;Shaka Player library failed to load.&#34;);
-    shaka.polyfill.installAll();
-    if (!shaka.Player.isBrowserSupported()) throw new Error(&#34;This browser does not support Shaka Player.&#34;);
-
-    if (shakaPlayer) {
-      try { await shakaPlayer.destroy(); } catch (_) {}
-      shakaPlayer = null;
-    }
-    shakaVideo.removeAttribute(&#34;src&#34;);
-    shakaVideo.load();
-
-    shakaPlayer = new shaka.Player();
-    await shakaPlayer.attach(shakaVideo);
-    new shaka.ui.Overlay(shakaPlayer, shakaContainer, shakaVideo);
-
-    const clearKeys = {};
-    if (kid &amp;&amp; key) clearKeys[kid.replace(/-/g,&#34;&#34;).toLowerCase()] = key;
-    shakaPlayer.configure({
-      drm: {clearKeys},
-      streaming: {lowLatencyMode:true}
-    });
-
-    // Browsers do not allow JavaScript to freely set User-Agent. Referer is also
-    // controlled by browser policy; query parameters are accepted but not spoofed.
-    shakaPlayer.addEventListener(&#34;error&#34;, event =&gt; {
-      const detail = event.detail || event;
-      console.warn(&#34;Shaka playback error:&#34;, detail);
-    });
-    await shakaPlayer.load(url);
-    await shakaVideo.play().catch(()=&gt;{});
-    applyFitMode(fitModeIndex, false);
-    hideMessage();
-    startFitButtonAutoHide();
-  }
-
-  async function start() {
-    if (!sourceUrl) {
-      showMessage(&#34;Stream URL missing. Open this page with ?url=STREAM_URL&#34;);
-      return;
-    }
-    const url = validHttpUrl(sourceUrl);
-    if (!url) {
-      showMessage(&#34;Invalid stream URL. Only HTTP and HTTPS URLs are supported.&#34;);
-      return;
-    }
-
-    const engine = classifyStream(url);
-    if (engine === &#34;hls&#34;) {
-      startJW(url);
-      return;
-    }
-
-    try {
-      await startShaka(url);
-    } catch (error) {
-      console.error(&#34;DASH playback failed:&#34;, error);
-      showMessage(&#34;DASH playback failed. Check the stream URL, CORS and DRM key.&#34;);
-    }
-  }
-
-  window.addEventListener(&#34;pagehide&#34;, async () =&gt; {
-    stopped = true;
-    clearTimeout(fitButtonHideTimer);
-    clearTimeout(retryTimer);
-    clearJW();
-    if (shakaPlayer) {
-      try { await shakaPlayer.destroy(); } catch (_) {}
-      shakaPlayer = null;
-    }
-  }, {once:true});
-
-  // title/category are intentionally optional; no extra overlay is added.
-  document.title = [eventTitle || streamName || &#34;SPORTZONE Player&#34;, category].filter(Boolean).join(&#34; · &#34;);
-  start();
-})();
-    </script>
-    <!-- Anti-Adblock Popup -->
-    <div class="adb" id="adb" style="display: none;">
-      <div class="adbs">
-        <h3>
-          Adblock/Brave Shields Detected
-        </h3>
-        <p>
-          Please disable your adblocker or Brave Shields to continue browsing this site.
-        </p>
+    <div id="overlay">
+      <svg width="34" height="34" viewBox="0 0 40 40" fill="none">
+        <circle cx="20" cy="20" r="16" stroke="#1a1a1a" stroke-width="4">
+        </circle>
+        <path d="M20 4a16 16 0 0 1 16 16" stroke="#38bdf8" stroke-width="4" stroke-linecap="round">
+        </path>
+      </svg>
+      <p id="loadMsg">
+        Missing or invalid ?url= parameter
+      </p>
+    </div>
+    <div id="status" class="show err">
+      <span class="st-dot"></span>
+      <span>      Missing or invalid stream URL.
+</span>
+    </div>
+    <div id="pc">
+      <div id="player">
       </div>
     </div>
-    <style>
-      .adb {
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  left: 0;
-  top: 0;
-  background: rgba(0, 0, 0, 0.85);
-  z-index: 99999;
-  display: none;
-  align-items: center;
-  justify-content: center;
-}
-.adbs {
-  background: #fff;
-  padding: 30px;
-  border-radius: 12px;
-  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.4);
-  text-align: center;
-  max-width: 400px;
-  width: 90%;
-}
-@keyframes glow {
-  from { text-shadow: 0 0 0px #ff0000; }
-  to { text-shadow: 0 0 1px #ff0000; }
-}
-.adbs h3 {
-  color: #d00;
-  font-size: 24px;
-  margin-bottom: 15px;
-}
-.adbs p {
-  font-size: 16px;
-  color: #333;
-}
-    </style>
     <script>
-      // ----------------- Popup Function -----------------
-function showPopup(reason = &#34;Adblock Detected&#34;) {
-  document.getElementById(&#34;adb&#34;).style.display = &#34;flex&#34;;
-  document.querySelector(&#34;#adb .adbs h3&#34;).innerText = reason;
+      (function(){
+&#34;use strict&#34;;
+var $overlay = document.getElementById(&#34;overlay&#34;);
+var $loadMsg = document.getElementById(&#34;loadMsg&#34;);
+var $status  = document.getElementById(&#34;status&#34;);
+var _stTmr = null;
 
-  if (reason.includes(&#34;Brave&#34;)) {
-  document.querySelector(&#34;#adb .adbs p&#34;).innerHTML = `
-    Please disable Brave Shields (click Brave logo → toggle Shields off) to continue browsing.&lt;br&gt;
-    &lt;span style=&#34;
-      color: #ff0000;
-      font-weight: bold;
-      animation: glow 1s ease-in-out infinite alternate;
-    &#34;&gt;
-      If still showing message after disabling please reload page
-    &lt;/span&gt;
-  `;
-}
-  console.warn(&#34;⚠️ Popup Triggered:&#34;, reason);
-}
-
-// ----------------- PC Browser Adblock Detection -----------------
-async function detectAdblock() {
-  let detected = false;
-
-  // bait div
-  const bait = document.createElement(&#34;div&#34;);
-  bait.className = &#34;ad adsbox ad-banner adsense ad-container sponsored&#34;;
-  bait.style.cssText = &#34;width:1px;height:1px;position:absolute;left:-9999px;top:-9999px;&#34;;
-  document.body.appendChild(bait);
-
-  // bait img
-  const img = document.createElement(&#34;img&#34;);
-  img.src = &#34;https://pagead2.googlesyndication.com/pagead/imgad?id=CAASFeDxyz&#34;;
-  img.style.cssText = &#34;width:1px;height:1px;position:absolute;left:-9999px;top:-9999px;&#34;;
-  img.onerror = () =&gt; { detected = true; };
-  document.body.appendChild(img);
-
-  // bait iframe
-  const iframe = document.createElement(&#34;iframe&#34;);
-  iframe.src = &#34;https://googleads.g.doubleclick.net/pagead/html/r2023/sample-ad.html&#34;;
-  iframe.style.cssText = &#34;width:1px;height:1px;position:absolute;left:-9999px;top:-9999px;&#34;;
-  iframe.onerror = () =&gt; { detected = true; };
-  document.body.appendChild(iframe);
-
-  // bait script
-  const script = document.createElement(&#34;script&#34;);
-  script.src = &#34;https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js&#34;;
-  script.async = true;
-  script.onerror = () =&gt; { detected = true; };
-  document.head.appendChild(script);
-
-  await new Promise(resolve =&gt; setTimeout(resolve, 500));
-
-  if (
-    window.getComputedStyle(bait).display === &#34;none&#34; ||
-    bait.offsetHeight === 0 ||
-    bait.offsetParent === null
-  ) {
-    detected = true;
-  }
-
-  bait.remove();
-  img.remove();
-  iframe.remove();
-  script.remove();
-
-  return detected;
-}
-
-// ----------------- Brave Shields Detection -----------------
-async function detectBraveShields() {
-  try {
-    let res = await fetch(&#34;https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js&#34;, {
-      method: &#34;GET&#34;,
-      cache: &#34;no-store&#34;,
-      mode: &#34;no-cors&#34;
-    });
-
-    if (res.type === &#34;opaque&#34;) {
-      try {
-        const buf = await res.clone().arrayBuffer();
-        console.log(&#34;🟡 Brave Response Size:&#34;, buf.byteLength);
-
-        // Corrected Logic:
-        // Size &lt; 100 = Shields OFF
-        // Size &gt;= 100 = Shields ON
-        if (buf.byteLength &lt; 100) {
-          return false; // Shields OFF
-        } else {
-          return true;  // Shields ON
-        }
-      } catch (e) {
-        console.warn(&#34;🟡 Brave fetch blocked&#34;, e);
-        return true; // Shields ON
-      }
-    }
-    return true; // default treat as ON
-  } catch (e) {
-    console.error(&#34;🛑 Brave Shields hard blocked&#34;, e);
-    return true; // Shields ON
+function getStreamUrl(){
+  var params = new URLSearchParams(window.location.search);
+  var urlParam = params.get(&#34;url&#34;);
+  if(!urlParam) return null;
+  try{
+    return decodeURIComponent(urlParam);
+  }catch(e){
+    return null;
   }
 }
 
-// ----------------- Main -----------------
-window.addEventListener(&#34;load&#34;, async () =&gt; {
-  const shieldsOn = await detectBraveShields();
-  if (shieldsOn) {
-    showPopup(&#34;Brave Shields Detected&#34;);
+function toast(msg, type, dur){
+  $status.innerHTML = &#39;&lt;span class=&#34;st-dot&#34;&gt;&lt;/span&gt;&lt;span&gt;&#39; + msg + &#39;&lt;/span&gt;&#39;;
+  $status.className = &#34;show &#34; + (type || &#34;ok&#34;);
+  if(_stTmr){
+    clearTimeout(_stTmr);
+    _stTmr = null;
+  }
+  if(dur !== 0){
+    _stTmr = setTimeout(function(){
+      $status.className = $status.className.replace(&#34;show&#34;,&#34;&#34;).trim();
+      _stTmr = null;
+    }, dur || 4000);
+  }
+}
+
+function setMsg(m){
+  if($loadMsg) $loadMsg.textContent = m;
+}
+
+function hideOverlay(){
+  if($overlay) $overlay.style.display = &#34;none&#34;;
+}
+
+function startPlayer(){
+  var streamUrl = getStreamUrl();
+  if(!streamUrl){
+    setMsg(&#34;Missing or invalid ?url= parameter&#34;);
+    toast(&#34;Missing or invalid stream URL.&#34;, &#34;err&#34;, 0);
     return;
   }
 
-  const adblocker = await detectAdblock();
-  if (adblocker) {
-    showPopup(&#34;Adblock Detected&#34;);
-  }
-});
+  setMsg(&#34;Loading Stream…&#34;);
+  toast(&#34;Loading Stream…&#34;, &#34;warn&#34;, 0);
+
+  var playerInstance = jwplayer(&#34;player&#34;);
+
+  playerInstance.setup({
+    file: streamUrl,
+    autostart: true,
+    mute: true,
+    primary: &#34;html5&#34;,
+    hlshtml: true,
+    width: &#34;100%&#34;,
+    height: &#34;100%&#34;,
+    crossorigin: &#34;anonymous&#34;
+  });
+
+  playerInstance.on(&#34;ready&#34;, function(){
+    hideOverlay();
+    toast(&#34;Ready — Tap ▶ To Play&#34;, &#34;ok&#34;, 5000);
+  });
+
+  playerInstance.on(&#34;play&#34;, function(){
+    toast(&#34;Live&#34;, &#34;live&#34;, 3000);
+  });
+
+  playerInstance.on(&#34;buffer&#34;, function(){
+    toast(&#34;Buffering…&#34;, &#34;warn&#34;, 0);
+  });
+
+  playerInstance.on(&#34;error&#34;, function(e){
+    console.error(&#34;JWPlayer Error:&#34;, e);
+    toast(&#34;Stream Blocked or CORS Error&#34;, &#34;err&#34;, 6000);
+  });
+}
+
+document.addEventListener(&#34;DOMContentLoaded&#34;, startPlayer);
+})();
     </script>
   </body>
 </html>
