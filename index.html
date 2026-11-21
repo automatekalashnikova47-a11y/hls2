@@ -1,357 +1,355 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="utf-8">
-<title>STREAM-47 LIVE</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Live match stream player">
-<meta name="author" content="Stream47">
-<meta name="referrer" content="strict-origin-when-cross-origin">
-<meta name="theme-color" content="#07090e">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%234d7cff' d='M13 2L3 14h9l-1 8 10-12h-9z'/%3E%3C/svg%3E">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+    <link rel="stylesheet" href="/assets/styles-QejeIFif.css" data-precedence="default" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&amp;family=Rajdhani:wght@400;500;600;700&amp;display=swap" data-precedence="default" />
+    <title>
+      STREAM-47 LIVE
+    </title>
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta name="author" content="Stream47" />
+    <meta name="twitter:site" content="@Lovable" />
+    <meta name="description" content="Live match stream player" />
+    <meta property="og:title" content="STREAM-47 LIVE" />
+    <meta property="og:description" content="Live match stream player" />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="modulepreload" href="/assets/index-FSnphtFR.js" />
+    <link rel="modulepreload" href="/assets/routes-S6c_tNT5.js" />
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
+    <style>
+      #lovable-badge {
+		--badge-bg: #1b1b1b;
+		--badge-text: #c5c1b9;
+		--badge-text-hover: #dcdad5;
+		--badge-radius: 6px;
+		--badge-padding: 8px;
+		--badge-gap: 6px;
+		--badge-shadow: 
+			0 0 0 1px rgba(0, 0, 0, 0.88),
+			0 1px 0 0 rgba(0, 0, 0, 0.04),
+			0 2px 2px -1px rgba(0, 0, 0, 0.08),
+			0 4px 4px -2px rgba(0, 0, 0, 0.08),
+			0 8px 8px -4px rgba(0, 0, 0, 0.08),
+			0 16px 16px -8px rgba(0, 0, 0, 0.08);
+		--badge-transition-duration: 0.2s;
+		--badge-transition-easing: cubic-bezier(0.16, 1, 0.32, 1);
+		--focus-color: #575ECF;
+		--focus-offset: 2px;
+		--focus-width: 2px;
+		
+		position: fixed;
+		bottom: 12px;
+		right: 12px;
+		height: 24px;
+		display: flex;
+		align-items: center;
+		z-index: 1000000;
+		background-color: var(--badge-bg) !important;
+		color: var(--badge-text) !important;
+		border-radius: var(--badge-radius);
+		box-shadow: var(--badge-shadow) !important;
+		font-size: 12px;
+		font-family: system-ui, -apple-system, BlinkMacSystemFont, &#39;Segoe UI&#39;, Roboto, sans-serif;
+		font-weight: 400 !important;
+		text-transform: none !important;
+		font-feature-settings: normal !important;
+		transform: translateZ(0);
+		will-change: transform, opacity;
+		transition: opacity var(--badge-transition-duration) var(--badge-transition-easing);
+	}
 
-<link rel="preconnect" href="https://cdn.plyr.io">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" onerror="this.onerror=null;this.href='https://cdn.jsdelivr.net/npm/plyr@3.7.8/dist/plyr.css'">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@400;500;600;700&display=swap">
+	#lovable-badge.closing {
+		opacity: 0;
+		pointer-events: none;
+	}
 
-<!-- Adcash library (async so a blocked/slow ad script can never stall the player) -->
-<script id="aclib" src="https://acscdn.com/script/aclib.js" async></script>
-<script>
-  window.addEventListener('load', function () {
-    try { if (window.aclib) aclib.runVideoSlider({ zoneId: '12344258' }); } catch (e) {}
-  });
-  /* Right-click / shortcut protection (cosmetic only) */
-  document.addEventListener('contextmenu', function (e) { e.preventDefault(); });
-  document.addEventListener('keydown', function (e) {
-    var k = (e.key || '').toLowerCase();
-    if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && (k === 'i' || k === 'j')) || (e.ctrlKey && k === 'u')) e.preventDefault();
-  });
-</script>
+	#lovable-badge-cta {
+		display: flex;
+		align-items: baseline;
+		gap: var(--badge-gap);
+		box-sizing: border-box;
+		padding: 4px var(--badge-padding) 0;
+		height: 100%;
+		color: inherit;
+		text-decoration: none;
+		white-space: nowrap;
+		border-radius: var(--badge-radius) 0 0 var(--badge-radius);
+		transition: 
+			background-color var(--badge-transition-duration) ease,
+			color var(--badge-transition-duration) ease,
+			transform 0.1s ease;
+	}
 
-<style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--brand-blue:#4d7cff;--brand-blue-glow:rgba(77,124,255,.6);--bg-dark:#07090e;--text-dim:#9ca3af;--plyr-color-main:#4d7cff;color-scheme:dark}
-html,body{width:100%;height:100%;background:var(--bg-dark);overflow:hidden;font-family:'Rajdhani',system-ui,sans-serif;color:#fff;touch-action:manipulation}
+	#lovable-badge-cta:hover {
+		background: rgba(255, 255, 255, 0.04);
+		color: var(--badge-text-hover);
+	}
 
-.bg-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.02) 1px,transparent 1px);background-size:30px 30px;z-index:0;pointer-events:none;transform:perspective(500px) rotateX(45deg) scale(2);transform-origin:top center;opacity:.35}
+	#lovable-badge-cta:active {
+		transform: scale(0.98);
+	}
 
-/* Screens (fade in/out) */
-.screen{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;z-index:10;background:radial-gradient(circle at center,#0c1017 0%,var(--bg-dark) 100%);transition:opacity .5s ease,visibility .5s ease;padding:10px}
-.screen.hidden{opacity:0;visibility:hidden;pointer-events:none}
-#loader-screen{z-index:50}
-#error-screen{z-index:60;background:var(--bg-dark)}
-.off{display:none!important}
+	#lovable-badge-cta:focus {
+		outline: none;
+	}
 
-.brand-title{font-family:'Bebas Neue',Impact,'Arial Narrow',sans-serif;font-size:clamp(32px,6vw,48px);letter-spacing:clamp(3px,.8vw,5px);line-height:1;color:#fff;text-shadow:0 0 20px rgba(255,255,255,.35),0 0 35px rgba(77,124,255,.25);margin-bottom:clamp(10px,2vh,16px)}
-.brand-title span{color:#3b82f6;text-shadow:0 0 20px rgba(59,130,246,.6),0 0 40px rgba(59,130,246,.3)}
-.dots-container{display:flex;gap:clamp(6px,1.2vw,10px);margin-bottom:clamp(16px,3vh,28px)}
-.dot{width:clamp(6px,1vw,8px);height:clamp(6px,1vw,8px);background:#3b82f6;border-radius:50%;opacity:.3;box-shadow:0 0 10px rgba(59,130,246,.8);animation:pulseDot 1.4s infinite ease-in-out both}
-.dot:nth-child(1){animation-delay:-.32s}
-.dot:nth-child(2){animation-delay:-.16s}
-@keyframes pulseDot{0%,80%,100%{transform:scale(.75);opacity:.25}40%{transform:scale(1.15);opacity:.9}}
-.subtitle{font-size:clamp(10px,1.8vw,13px);font-weight:600;letter-spacing:clamp(4px,1.2vw,8px);color:#8b9bb4;text-transform:uppercase;margin-bottom:clamp(16px,3vh,28px);padding-left:clamp(4px,1.2vw,8px)}
-.status-text{font-size:clamp(9px,1.5vw,11px);font-weight:600;letter-spacing:clamp(3px,1vw,5px);color:#6b7c96;text-transform:uppercase;padding-left:clamp(3px,1vw,5px)}
+	#lovable-badge-cta:focus-visible {
+		outline: var(--focus-width) solid var(--focus-color);
+		outline-offset: var(--focus-offset);
+		z-index: 1;
+	}
 
-.lightning-icon{width:clamp(32px,5vw,42px);height:clamp(32px,5vw,42px);fill:#dca952;margin-bottom:16px;filter:drop-shadow(0 0 12px rgba(220,169,82,.3))}
-.error-title{font-family:'Bebas Neue',Impact,'Arial Narrow',sans-serif;font-size:clamp(24px,4vw,32px);letter-spacing:2px;margin-bottom:12px}
-.error-desc{font-family:'Courier New',Courier,monospace;font-size:clamp(10px,1.5vw,12px);color:var(--text-dim);max-width:min(90vw,340px);line-height:1.5;margin-bottom:20px}
-.retry-btn{background:var(--brand-blue);color:#fff;border:none;padding:8px 24px;border-radius:4px;font-family:'Rajdhani',system-ui,sans-serif;font-size:14px;font-weight:700;letter-spacing:1.5px;cursor:pointer;transition:all .2s ease;box-shadow:0 4px 15px rgba(65,105,225,.2)}
-.retry-btn:hover{transform:translateY(-2px);background:#5c85ff;box-shadow:0 6px 20px rgba(65,105,225,.35)}
-.retry-btn:focus-visible,#custom-fs-btn:focus-visible,#join-btn:focus-visible{outline:2px solid var(--brand-blue);outline-offset:2px}
+	#lovable-badge-text {
+		line-height: 1;
+	}
 
-/* Player */
-#player-wrap{width:100%;height:100%;position:relative;background:#000;z-index:5}
-video{width:100%;height:100%;display:block}
-.plyr{width:100%!important;height:100%!important;position:relative;font-weight:600}
-.plyr--video,.plyr__video-wrapper{height:100%!important}
-.plyr video{height:100%!important;object-fit:contain}
+	/* The wordmark baseline sits at y=12 of the 16px logo; an empty 12px box
+	   makes that the flex baseline so the text aligns to it on any system font. */
+	#lovable-badge-logo {
+		position: relative;
+		display: block;
+		width: 52px;
+		height: 12px;
+	}
 
-#join-btn{position:absolute;top:8px;left:8px;z-index:102;color:rgba(255,255,255,.7);border:1px solid rgba(255,255,255,.3);padding:2px 8px;border-radius:4px;text-decoration:none;font-weight:700;font-size:10px;letter-spacing:1px;background:rgba(0,0,0,.4);backdrop-filter:blur(4px);transition:all .2s}
-#join-btn:hover{color:#fff;border-color:#fff;background:rgba(0,0,0,.7)}
+	#lovable-badge-logo svg {
+		position: absolute;
+		top: 0;
+		left: 0;
+	}
 
-#custom-fs-btn{position:absolute;top:8px;right:8px;z-index:103;background:rgba(0,0,0,.65);border:1px solid rgba(65,105,225,.3);color:#fff;width:26px;height:26px;border-radius:4px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s ease,opacity .3s ease;backdrop-filter:blur(4px)}
-#custom-fs-btn:hover{background:rgba(65,105,225,.2);border-color:var(--brand-blue);box-shadow:0 0 8px var(--brand-blue-glow);transform:scale(1.05)}
-#custom-fs-btn svg{width:12px;height:12px;stroke:#fff;transition:transform .2s}
-#custom-fs-btn:active svg{transform:scale(.9)}
-.plyr--hide-controls #custom-fs-btn{opacity:0;pointer-events:none}
+	#lovable-badge-divider {
+		width: 1px;
+		height: 24px;
+		background-color: rgba(255, 255, 255, 0.04);
+		flex-shrink: 0;
+	}
 
-#wm{position:absolute;bottom:48px;left:50%;transform:translateX(-50%);z-index:102;pointer-events:none;display:flex;align-items:center;gap:8px;opacity:0;visibility:hidden;transition:opacity .4s ease,visibility .4s ease}
-#wm.visible{opacity:.4;visibility:visible}
-#wm.visible.dim,.plyr--hide-controls #wm.visible{opacity:.2}
-.wm-rule{width:22px;height:1px;background:linear-gradient(90deg,transparent,var(--brand-blue))}
-.wm-rule.r{background:linear-gradient(90deg,var(--brand-blue),transparent)}
-.wm-inner{display:flex;flex-direction:column;align-items:center;gap:1px}
-.wm-name{font-family:'Bebas Neue',Impact,'Arial Narrow',sans-serif;font-size:13px;letter-spacing:3px;color:#fff;text-shadow:0 2px 8px #000}
-.wm-name span{color:var(--brand-blue)}
-.wm-url{font-size:8px;font-weight:700;letter-spacing:2px;color:rgba(255,255,255,.6);text-transform:uppercase}
+	#lovable-badge-close {
+		width: 24px;
+		height: 24px;
+		min-width: 24px;
+		min-height: 24px;
+		cursor: pointer;
+		background: none;
+		border: none;
+		padding: 0;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		border-radius: 0 var(--badge-radius) var(--badge-radius) 0;
+		flex-shrink: 0;
+		transition: 
+			background-color var(--badge-transition-duration) ease,
+			transform 0.1s ease;
+	}
 
-@media (prefers-reduced-motion:reduce){.dot{animation:none;opacity:.7}.retry-btn,#custom-fs-btn,.screen{transition:none}}
-</style>
-</head>
-<body>
-<noscript>JavaScript is required to play the stream.</noscript>
+	#lovable-badge-close:hover {
+		background: rgba(255, 255, 255, 0.04);
+	}
 
-<div class="bg-grid"></div>
+	#lovable-badge-close:active {
+		transform: scale(0.92);
+	}
 
-<div id="loader-screen" class="screen">
-  <h1 class="brand-title">STREAM<span>47</span></h1>
-  <div class="dots-container" aria-hidden="true"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
-  <h2 class="subtitle">LIVE MATCH CENTER</h2>
-  <p class="status-text" id="status-text" role="status" aria-live="polite">ESTABLISHING CONNECTION...</p>
-</div>
+	#lovable-badge-close:focus {
+		outline: none;
+	}
 
-<div id="error-screen" class="screen hidden">
-  <svg class="lightning-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
-    <path d="M13 2L3 14H12L11 22L21 10H12L13 2Z" stroke="#dca952" stroke-width="1.5" stroke-linejoin="round"/>
-  </svg>
-  <h2 class="error-title">STREAM UNAVAILABLE</h2>
-  <p class="error-desc" id="error-desc" role="alert">Player did not load. Check if the stream URL is valid, CORS is allowed, and the .m3u8 is reachable.</p>
-  <button class="retry-btn" id="retry-btn" type="button">RETRY</button>
-</div>
+	#lovable-badge-close:focus-visible {
+		outline: var(--focus-width) solid var(--focus-color);
+		outline-offset: calc(var(--focus-offset) * -1);
+		z-index: 1;
+	}
 
-<div id="player-wrap">
-  <a id="join-btn" href="https://whatsapp.com/channel/0029VbBcvbn9WtC1onDirp09" target="_blank" rel="noopener noreferrer">JOIN US</a>
+	#lovable-badge-close svg path {
+		fill: var(--badge-text);
+		transition: fill var(--badge-transition-duration) ease;
+	}
 
-  <button id="custom-fs-btn" type="button" title="Toggle fullscreen" aria-label="Toggle fullscreen">
-    <svg class="fs-enter" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
-    <svg class="fs-exit off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 14h6v6m10-6h-6v6M4 10h6V4m10 6h-6V4"/></svg>
-  </button>
+	#lovable-badge-close:hover svg path {
+		fill: var(--badge-text-hover);
+	}
 
-  <video id="player" controls playsinline webkit-playsinline x5-playsinline x5-video-player-type="h5" x5-video-player-fullscreen="true"></video>
-</div>
+	@media (prefers-reduced-motion: reduce) {
+		#lovable-badge,
+		#lovable-badge-cta,
+		#lovable-badge-close,
+		#lovable-badge-close svg path {
+			transition: none;
+		}
+		
+		#lovable-badge-cta:active,
+		#lovable-badge-close:active {
+			transform: none;
+		}
+	}
 
-<div id="wm" aria-hidden="true">
-  <div class="wm-rule"></div>
-  <div class="wm-inner"><div class="wm-name">STREAM<span>47</span></div><div class="wm-url">stream-47.blogspot.com</div></div>
-  <div class="wm-rule r"></div>
-</div>
+	@media (prefers-contrast: high) {
+		#lovable-badge {
+			--badge-bg: #000;
+			--badge-text: #fff;
+			--badge-text-hover: #fff;
+			border: 2px solid currentColor;
+		}
+		
+		#lovable-badge-cta:focus-visible,
+		#lovable-badge-close:focus-visible {
+			outline-width: 3px;
+		}
+	}
+    </style>
+    <script defer="" src="/__l5e/events.b979ee024b15adfd.js" data-artifact-kind="dwl_content_hash" data-artifact-id="c1f0a4ca379e920105cc0b535bdfd2b7627152ea1bc2957d0a77f81c527137b1" data-commit-sha="daa22b6a24f598df176576f5384c68e2058b189e" data-context-token="v1.eyJwcm9qZWN0X2lkIjoibG92cF83NDVwOXN6MW1qOGN0dnZ2eXdoYnN4bWNtYSIsImFydGlmYWN0X2tpbmQiOiJkd2xfY29udGVudF9oYXNoIiwiYXJ0aWZhY3RfaWQiOiJjMWYwYTRjYTM3OWU5MjAxMDVjYzBiNTM1YmRmZDJiNzYyNzE1MmVhMWJjMjk1N2QwYTc3ZjgxYzUyNzEzN2IxIiwiY29tbWl0X3NoYSI6ImRhYTIyYjZhMjRmNTk4ZGYxNzY1NzZmNTM4NGM2OGUyMDU4YjE4OWUiLCJleHAiOjE3OTc4Mjg5MjF9.U4xQZPwyV7zr6oEiDIqBvAELofs-9k2lLszi_qCFj58" data-autocapture="1" data-consent="1">
+    </script>
+    <meta name="twitter:title" content="STREAM-47 LIVE" />
+    <meta name="twitter:description" content="Live match stream player" />
+    <meta property="og:image" content="https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/lovp_745p9sz1mj8ctvvvywhbsxmcma/d47b9832dea23d00b240e19cc9575d30_1795235045933.png" />
+    <meta name="twitter:image" content="https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/lovp_745p9sz1mj8ctvvvywhbsxmcma/d47b9832dea23d00b240e19cc9575d30_1795235045933.png" />
+  </head>
+  <body>
+    <!--$-->
+    <div class="relative h-dvh w-full overflow-hidden bg-background">
+      <div class="s47-grid">
+      </div>
+      <div class="s47-wrap">
+        <a class="s47-join" href="https://whatsapp.com/channel/0029VbBcvbn9WtC1onDirp09" rel="noopener noreferrer" target="_blank">        JOIN US
+</a>
+        <button type="button" class="s47-fs" data-idle="false" title="Toggle Fullscreen" aria-label="Enter fullscreen">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3">
+            </path>
+          </svg>
+        </button>
+        <div class="h-full w-full">
+        </div>
+        <div class="s47-wm" data-visible="false" data-idle="false">
+          <div class="s47-wm-rule">
+          </div>
+          <div class="s47-wm-inner">
+            <div class="s47-wm-name">
+              STREAM
+              <span>              47
+</span>
+            </div>
+            <div class="s47-wm-url">
+              stream-47.blogspot.com
+            </div>
+          </div>
+          <div class="s47-wm-rule r">
+          </div>
+        </div>
+      </div>
+      <div class="s47-screen z-50" data-hidden="false">
+        <h1 class="s47-brand">
+          STREAM
+          <span>          47
+</span>
+        </h1>
+        <div class="s47-dots">
+          <div class="s47-dot">
+          </div>
+          <div class="s47-dot">
+          </div>
+          <div class="s47-dot">
+          </div>
+        </div>
+        <h2 class="s47-subtitle">
+          LIVE MATCH CENTER
+        </h2>
+        <p class="s47-status">
+          ESTABLISHING CONNECTION...
+        </p>
+      </div>
+      <div class="s47-screen s47-screen-solid z-[60]" data-hidden="true">
+        <svg class="s47-bolt" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M13 2L3 14H12L11 22L21 10H12L13 2Z" stroke-width="1.5" stroke-linejoin="round">
+          </path>
+        </svg>
+        <h1 class="s47-error-title">
+          STREAM UNAVAILABLE
+        </h1>
+        <p class="s47-error-desc">
+          Player did not load. Check if the stream URL is valid, CORS is allowed, and the .m3u8 is reachable.
+        </p>
+      </div>
+    </div>
+    <script>
+      (function(a,f){let l;try{l=JSON.parse(sessionStorage.getItem(a)||&#34;{}&#34;)}catch{return}const n=l?.[f||history.state?.__TSR_key];let c=!1;for(const t in n){const e=n[t],o=e?.scrollX,s=e?.scrollY;if(Number.isFinite(o)&amp;&amp;Number.isFinite(s)){if(t===&#34;window&#34;)scrollTo(o,s),c=!0;else if(t)try{const r=document.querySelector(t);r&amp;&amp;(r.scrollLeft=o,r.scrollTop=s)}catch{}}}if(c)return;const i=location.hash.slice(1);if(i){const t=history.state?.__hashScrollIntoViewOptions??!0;if(t){const e=document.getElementById(i);e&amp;&amp;e.scrollIntoView(t)}return}scrollTo(0,0)})(&#34;tsr-scroll-restoration-v1_3&#34;);document.currentScript.remove()
+    </script>
+    <!--/$-->
+    <script data-tsr-stream-part="">
+      (self.$R=self.$R||{})[&#34;tsr&#34;]=[];self.$_TSR={h(){this.hydrated=!0,this.c()},e(){this.streamEnded=!0,this.c()},c(){this.hydrated&amp;&amp;this.streamEnded&amp;&amp;(delete self.$_TSR,delete self.$R.tsr)},p(e){this.initialized?e():this.buffer.push(e)},buffer:[]};$_TSR.router=($R=&gt;$R[0]={manifest:$R[1]={routes:$R[2]={__root__:$R[3]={preloads:$R[4]=[&#34;/assets/index-FSnphtFR.js&#34;],scripts:$R[5]=[$R[6]={attrs:$R[7]={type:&#34;module&#34;,async:!0,src:&#34;/assets/index-FSnphtFR.js&#34;}}]},&#34;/&#34;:$R[8]={preloads:$R[9]=[&#34;/assets/routes-S6c_tNT5.js&#34;]}}},matches:$R[10]=[$R[11]={i:&#34;__root__�&#34;,u:1795236921275,s:&#34;success&#34;,ssr:!0},$R[12]={i:&#34;��&#34;,u:1795236921275,s:&#34;success&#34;,ssr:!0}]})($R[&#34;tsr&#34;]);$_TSR.e();{let s=document.currentScript,p;while((p=s.previousElementSibling)&amp;&amp;p.hasAttribute(&#39;data-tsr-stream-part&#39;))p.remove();s.remove()}
+    </script>
+    <script type="module" async="" src="/assets/index-FSnphtFR.js">
+    </script>
+    <script>
+      document.currentScript.remove();/*$tsr-stream-boundary*/
+    </script>
+    <aside id="lovable-badge" role="complementary" dir="ltr" lang="en" aria-label="Edit with Lovable">
+      <a aria-label="Edit with Lovable" href="https://lovable.dev/projects/lovp_745p9sz1mj8ctvvvywhbsxmcma?utm_source=lovable-badge" id="lovable-badge-cta" rel="noopener nofollow" target="_blank">      <span id="lovable-badge-text">      Edit with
+</span>
+      <span id="lovable-badge-logo">      <svg xmlns="http://www.w3.org/2000/svg" width="52" height="16" fill="none" viewBox="0 0 52 16">
+        <path fill="#FCFBF8" fill-rule="evenodd" d="M20.318 5.25c.643 0 1.206.14 1.69.418a2.81 2.81 0 0 1 1.118 1.191c.266.513.4 1.115.4 1.807s-.134 1.296-.4 1.812a2.81 2.81 0 0 1-1.118 1.193c-.484.278-1.047.418-1.69.418s-1.208-.14-1.695-.418a2.85 2.85 0 0 1-1.125-1.193c-.262-.516-.393-1.12-.393-1.812s.131-1.294.393-1.807a2.848 2.848 0 0 1 1.125-1.191c.487-.279 1.052-.418 1.695-.418Zm0 1.425c-.27 0-.504.076-.7.228-.193.147-.34.37-.443.67-.102.295-.153.66-.153 1.093 0 .435.05.801.153 1.1.102.3.25.524.443.676.196.147.43.22.7.22.27 0 .502-.073.694-.22.193-.152.341-.375.443-.67.103-.299.153-.667.153-1.106 0-.65-.112-1.145-.337-1.481a1.08 1.08 0 0 0-.953-.51ZM32.7 5.25c.61 0 1.127.1 1.549.3.422.197.74.48.953.849.217.368.325.809.325 1.32v2.704c0 .29.02.562.062.812.044.245.108.4.19.466V12h-1.935a5.895 5.895 0 0 1-.105-.684 7.745 7.745 0 0 1-.02-.228 2.293 2.293 0 0 1-.151.203c-.205.242-.47.437-.793.584-.32.143-.685.215-1.094.215-.406 0-.77-.08-1.094-.24a1.845 1.845 0 0 1-.756-.682 1.984 1.984 0 0 1-.27-1.045c0-.606.178-1.069.535-1.388.356-.324.87-.534 1.542-.633l1.125-.16c.225-.032.403-.074.534-.123a.622.622 0 0 0 .288-.196.549.549 0 0 0 .093-.327.65.65 0 0 0-.11-.367.702.702 0 0 0-.32-.27c-.14-.07-.31-.105-.51-.105-.32 0-.576.083-.768.251-.193.164-.298.39-.314.676h-1.923c.016-.434.147-.82.393-1.155.25-.34.596-.604 1.039-.792.442-.189.954-.283 1.535-.283Zm.99 3.498a.98.98 0 0 1-.215.14 2.49 2.49 0 0 1-.584.178l-.473.092c-.315.061-.553.156-.713.283-.155.127-.233.305-.233.534 0 .23.084.412.252.547.168.135.383.203.645.203s.494-.058.694-.173c.201-.118.355-.282.461-.49.11-.21.166-.448.166-.714v-.6Zm4.526-2.375c.065-.125.138-.243.221-.349.197-.25.437-.44.719-.571.282-.135.6-.203.952-.203.528 0 .988.138 1.377.412.389.275.688.67.896 1.186.21.512.314 1.12.314 1.824 0 .7-.107 1.309-.32 1.825-.213.512-.518.906-.915 1.18-.393.275-.854.412-1.383.412-.352 0-.667-.062-.946-.184a1.832 1.832 0 0 1-.7-.554 2.2 2.2 0 0 1-.234-.383V12h-1.843V3h1.862v3.373Zm1.284.296c-.274 0-.51.085-.707.253-.192.163-.338.397-.436.7a3.376 3.376 0 0 0-.148 1.05c0 .406.05.759.148 1.058.098.299.243.53.436.694.197.164.433.246.707.246.279 0 .512-.082.7-.246.193-.164.336-.395.43-.694.099-.3.148-.652.148-1.058 0-.405-.05-.757-.147-1.056-.095-.299-.238-.53-.43-.694a1.015 1.015 0 0 0-.7-.253Zm9.416-1.419c.602 0 1.136.131 1.604.393.466.262.829.643 1.086 1.143.263.5.394 1.097.394 1.794 0 .25-.002.449-.006.596H47.51c.018.288.071.538.164.75a1.3 1.3 0 0 0 .491.596c.214.13.465.196.757.196.319 0 .583-.082.792-.246.209-.167.34-.403.393-.706h1.862a2.48 2.48 0 0 1-.485 1.235 2.54 2.54 0 0 1-1.051.805c-.439.188-.949.283-1.53.283-.655 0-1.225-.125-1.708-.375a2.672 2.672 0 0 1-1.13-1.143c-.267-.508-.4-1.137-.4-1.887 0-.712.14-1.327.418-1.843a2.86 2.86 0 0 1 1.155-1.186c.491-.27 1.051-.405 1.678-.405Zm-.044 1.345c-.274 0-.516.068-.725.203a1.29 1.29 0 0 0-.479.59 2.045 2.045 0 0 0-.132.498h2.562a1.873 1.873 0 0 0-.138-.602 1.061 1.061 0 0 0-.418-.516 1.243 1.243 0 0 0-.67-.173Z" clip-rule="evenodd">
+        </path>
+        <path fill="#FCFBF8" d="m26.605 9.995 1.342-4.566h1.924L27.628 12h-2.07l-2.33-6.57h1.98l1.397 4.565Zm-13.013.143h2.256c1.632 0 1.421 1.837 1.418 1.861h-5.603V3h1.93v7.138Zm31.516 1.861h-1.862V3h1.862v8.999Z">
+        </path>
+        <path fill="url(#a)" fill-rule="evenodd" d="M2.7 3c1.492 0 2.7 1.192 2.7 2.663v1.012h.9c1.49 0 2.7 1.192 2.7 2.662S7.791 12 6.3 12H0V5.663C0 4.193 1.209 3 2.7 3Z" clip-rule="evenodd">
+        </path>
+        <defs>
+          <radialGradient id="a" cx="0" cy="0" r="1" gradientTransform="matrix(-1.54236 7.07838 -10.231 -2.15602 4.627 5.022)" gradientUnits="userSpaceOnUse">
+            <stop offset=".106" stop-color="#FE7B02">
+            </stop>
+            <stop offset=".394" stop-color="#FE3F21">
+            </stop>
+            <stop offset=".608" stop-color="#F858BC">
+            </stop>
+            <stop offset=".929" stop-color="#575ECF">
+            </stop>
+          </radialGradient>
+        </defs>
+      </svg>
+</span>
+</a>
+      <span id="lovable-badge-divider" aria-hidden="true"></span>
+      <button id="lovable-badge-close" aria-label="Dismiss" title="Dismiss" type="button">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 16 16" aria-hidden="true">
+          <path d="M10.646 4.646a.5.5 0 1 1 .707.708L8.707 8l2.646 2.646a.5.5 0 1 1-.707.707L8 8.707l-2.646 2.646a.5.5 0 1 1-.708-.707L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708L8 7.293l2.646-2.647Z">
+          </path>
+        </svg>
+      </button>
+    </aside>
+    <script>
+      (() =&gt; {
+		if (window.self !== window.top || navigator.userAgent.includes(&#39;puppeteer&#39;)) {
+			const badge = document.querySelector(&#39;#lovable-badge&#39;);
+			if (badge) {
+				badge.style.display = &#39;none&#39;;
+			}
+			return;
+		}
 
-<script>
-(function () {
-  'use strict';
-
-  /* Each library is tried from several CDNs, so one blocked CDN no longer kills the player */
-  var HLS_URLS = [
-    'https://cdn.jsdelivr.net/npm/hls.js@1.5.13/dist/hls.min.js',
-    'https://unpkg.com/hls.js@1.5.13/dist/hls.min.js',
-    'https://cdnjs.cloudflare.com/ajax/libs/hls.js/1.5.13/hls.min.js'
-  ];
-  var PLYR_URLS = [
-    'https://cdn.plyr.io/3.7.8/plyr.js',
-    'https://cdn.jsdelivr.net/npm/plyr@3.7.8/dist/plyr.min.js',
-    'https://unpkg.com/plyr@3.7.8/dist/plyr.min.js'
-  ];
-  var MAX_RETRIES = 3;
-  var BASE_CONTROLS = ['play-large', 'play', 'progress', 'current-time', 'mute', 'volume'];
-
-  var $ = function (id) { return document.getElementById(id); };
-  var video = $('player'), wrap = $('player-wrap'), loader = $('loader-screen'), errorScreen = $('error-screen'),
-      statusText = $('status-text'), errorDesc = $('error-desc'), retryBtn = $('retry-btn'),
-      wm = $('wm'), fsBtn = $('custom-fs-btn');
-  var hls = null, plyr = null, plyrBase = '', wantQ = 0;
-  var hardTimeout = 0, retryTimer = 0, wmTimer = 0, netTries = 0, mediaTries = 0;
-
-  /* ---------- Stream URL ---------- */
-  // Read the value exactly as typed so nested links (proxy?u=...&token=...) keep their "&", "+" and "%xx".
-  function readSrc() {
-    var m = location.search.match(/[?&](?:url|stream|get|src|m3u8)=(.*)$/i);
-    if (!m) return '';
-    var s = m[1].trim();
-    if (/^https?%3A/i.test(s)) { try { s = decodeURIComponent(s); } catch (e) {} }
-    return s;
-  }
-  function check(u) {
-    var x;
-    try { x = new URL(u, location.href); } catch (e) { return 'The stream URL is not valid.'; }
-    if (!/^https?:$/.test(x.protocol)) return 'Only http and https stream URLs are supported.';
-    if (location.protocol === 'https:' && x.protocol === 'http:') return 'This page is on https, so browsers block http streams. Use an https link.';
-    return '';
-  }
-  var SRC = readSrc();
-
-  /* ---------- Screens ---------- */
-  function busy(msg) {
-    errorScreen.classList.add('hidden'); loader.classList.remove('hidden');
-    wm.classList.remove('visible');
-    if (msg) statusText.textContent = msg;
-  }
-  function ready() {
-    clearTimeout(hardTimeout);
-    loader.classList.add('hidden'); errorScreen.classList.add('hidden');
-    mountOverlays(); wm.classList.add('visible');
-  }
-  function fail(msg, canRetry) {
-    clearTimeout(hardTimeout); clearTimeout(retryTimer);
-    if (hls) { hls.destroy(); hls = null; }
-    video.pause();
-    loader.classList.add('hidden'); errorScreen.classList.remove('hidden');
-    wm.classList.remove('visible');
-    errorDesc.textContent = msg;
-    retryBtn.hidden = canRetry === false;
-  }
-  function armTimeout() {
-    clearTimeout(hardTimeout);
-    hardTimeout = setTimeout(function () {
-      fail('Connection timed out. Check that the stream URL is valid, CORS is allowed and the .m3u8 is reachable.');
-    }, 15000);
-  }
-  // Move the watermark and fullscreen button inside Plyr so they follow its controls
-  function mountOverlays() {
-    var p = document.querySelector('.plyr');
-    if (!p) return;
-    [wm, fsBtn].forEach(function (el) { if (el.parentNode !== p) p.appendChild(el); });
-  }
-  function tryPlay() {
-    var p = video.play();
-    // Autoplay blocked: drop the loader so Plyr's big play button is usable
-    if (p && p.catch) p.catch(function (e) { if (e && e.name === 'NotAllowedError') ready(); });
-  }
-
-  /* ---------- Libraries ---------- */
-  function loadAny(urls, global) {
-    return new Promise(function (ok, no) {
-      var i = 0;
-      (function next() {
-        if (i >= urls.length) return no(new Error('load failed'));
-        var s = document.createElement('script');
-        s.src = urls[i++];
-        s.onload = function () { window[global] ? ok(s.src) : (s.remove(), next()); };
-        s.onerror = function () { s.remove(); next(); };
-        document.head.appendChild(s);
-      })();
-    });
-  }
-  function needHls() { return window.Hls ? Promise.resolve() : loadAny(HLS_URLS, 'Hls'); }
-  function needPlyr() {
-    return window.Plyr ? Promise.resolve() : loadAny(PLYR_URLS, 'Plyr').then(function (u) { plyrBase = u.replace(/[^/]+$/, ''); });
-  }
-
-  /* ---------- Plyr (optional: native controls remain if it cannot load) ---------- */
-  function makePlyr(extra) {
-    if (plyr || !window.Plyr) return;
-    var opts = { controls: BASE_CONTROLS, fullscreen: { enabled: true, fallback: true, iosNative: true, container: '#player-wrap' } };
-    if (plyrBase) opts.iconUrl = plyrBase + 'plyr.svg';
-    try { plyr = new Plyr(video, Object.assign(opts, extra)); } catch (e) { plyr = null; }
-  }
-  function setLevel(v) {
-    if (!hls) return;
-    v = Number(v) || 0;
-    if (!v) { hls.currentLevel = -1; return; }          // 0 = Auto (adaptive)
-    var i = hls.levels.findIndex(function (l) { return l.height === v; });
-    if (i > -1) hls.currentLevel = i;
-  }
-  function setupPlyr(levels) {
-    if (plyr) return;
-    var q = Array.from(new Set(levels.map(function (l) { return l.height; }).filter(function (h) { return h > 0; })))
-      .sort(function (a, b) { return b - a; });
-    makePlyr(q.length > 1 ? {
-      controls: BASE_CONTROLS.concat('settings'),
-      settings: ['quality'],
-      quality: { default: 0, options: [0].concat(q), forced: true, onChange: function (v) { wantQ = Number(v) || 0; setLevel(wantQ); } },
-      i18n: { qualityLabel: { 0: 'Auto' } }
-    } : {});
-  }
-
-  /* ---------- Playback ---------- */
-  function teardown() {
-    clearTimeout(hardTimeout); clearTimeout(retryTimer);
-    if (hls) { hls.destroy(); hls = null; }
-  }
-  function startHls() {
-    hls = new Hls({ maxBufferLength: 30, backBufferLength: 60, enableWorker: true, lowLatencyMode: false });
-    hls.on(Hls.Events.MANIFEST_PARSED, function (_, d) { setupPlyr(d.levels); setLevel(wantQ); tryPlay(); });
-    hls.on(Hls.Events.ERROR, function (_, d) { if (d.fatal) onFatal(d); });
-    hls.attachMedia(video);
-    hls.loadSource(SRC);
-  }
-  function startNative() { video.src = SRC; makePlyr({}); tryPlay(); }
-  function restartHls() { if (hls) { hls.destroy(); hls = null; } startHls(); }
-
-  function onFatal(d) {
-    var T = Hls.ErrorTypes;
-    if (d.type === T.MEDIA_ERROR && mediaTries < MAX_RETRIES) {
-      if (++mediaTries === 2) hls.swapAudioCodec();
-      hls.recoverMediaError();
-    } else if (d.type === T.NETWORK_ERROR && netTries < MAX_RETRIES) {
-      netTries++;
-      busy('RECONNECTING... (' + netTries + '/' + MAX_RETRIES + ')');
-      armTimeout();
-      // Rebuild the player so manifest failures recover too (startLoad() alone cannot)
-      retryTimer = setTimeout(restartHls, 1000 * netTries);
-    } else {
-      fail(explain(d));
-    }
-  }
-  function explain(d) {
-    var c = d.response && d.response.code, T = Hls.ErrorTypes;
-    if (c === 404) return 'Stream not found (404). The link may have expired or changed.';
-    if (c === 401 || c === 403) return 'Access denied (' + c + '). The link may need a token or be restricted.';
-    if (c >= 500) return 'The stream server returned an error (' + c + '). Try again shortly.';
-    if (d.type === T.NETWORK_ERROR) return 'Stream unreachable. The server may be offline, or it does not allow this site (CORS).';
-    if (d.type === T.MEDIA_ERROR) return 'This browser cannot decode the stream (' + d.details + ').';
-    return 'Playback failed (' + d.details + ').';
-  }
-
-  async function start() {
-    teardown(); netTries = mediaTries = 0;
-    busy('ESTABLISHING CONNECTION...'); armTimeout();
-    await Promise.allSettled([needHls(), needPlyr()]);
-    try {
-      if (window.Hls && Hls.isSupported()) startHls();
-      else if (video.canPlayType('application/vnd.apple.mpegurl')) startNative();
-      else fail(window.Hls ? 'Your browser does not support HLS playback.' : 'The player library could not be loaded. Check your connection or ad blocker, then retry.');
-    } catch (e) { fail('Player error: ' + e.message); }
-  }
-
-  /* ---------- Events ---------- */
-  video.addEventListener('playing', function () { netTries = mediaTries = 0; ready(); });
-  video.addEventListener('error', function () {
-    if (!hls && video.getAttribute('src')) fail('Native playback failed. The stream might be offline or unsupported.');
-  });
-  retryBtn.addEventListener('click', start);
-
-  // Watermark dims when idle
-  function activity() {
-    wm.classList.remove('dim'); clearTimeout(wmTimer);
-    wmTimer = setTimeout(function () { if (!video.paused) wm.classList.add('dim'); }, 3000);
-  }
-  ['mousemove', 'touchstart'].forEach(function (t) { document.addEventListener(t, activity, { passive: true }); });
-  video.addEventListener('play', activity);
-  video.addEventListener('pause', function () { wm.classList.remove('dim'); });
-
-  /* ---------- Fullscreen ---------- */
-  function fsEl() { return document.fullscreenElement || document.webkitFullscreenElement; }
-  function toggleFs() {
-    if (fsEl()) { (document.exitFullscreen || document.webkitExitFullscreen).call(document); return; }
-    var req = wrap.requestFullscreen || wrap.webkitRequestFullscreen;
-    var native = function () { if (video.webkitEnterFullscreen) video.webkitEnterFullscreen(); };
-    if (!req) return native();                     // iPhone: only the video itself can go fullscreen
-    var p = req.call(wrap);
-    if (p && p.catch) p.catch(native);
-  }
-  function orient(lock) {
-    try {
-      var s = screen.orientation; if (!s) return;
-      if (lock) { var p = s.lock('landscape'); if (p && p.catch) p.catch(function () {}); } else s.unlock();
-    } catch (e) {}
-  }
-  function onFsChange() {
-    var on = !!fsEl();
-    fsBtn.querySelector('.fs-enter').classList.toggle('off', on);
-    fsBtn.querySelector('.fs-exit').classList.toggle('off', !on);
-    orient(on);
-  }
-  fsBtn.addEventListener('click', toggleFs);
-  ['fullscreenchange', 'webkitfullscreenchange'].forEach(function (t) { document.addEventListener(t, onFsChange); });
-  video.addEventListener('webkitbeginfullscreen', function () { orient(true); });
-  video.addEventListener('webkitendfullscreen', function () { orient(false); });
-
-  /* ---------- Boot ---------- */
-  var bad = SRC ? check(SRC) : 'No stream URL provided. Add ?url=<m3u8-link> to the page address.';
-  if (bad) fail(bad, false); else start();
-})();
-</script>
-</body>
+		const closeButton = document.querySelector(&#39;#lovable-badge-close&#39;);
+		if (closeButton) {
+			closeButton.addEventListener(&#39;click&#39;, function(event) {
+				event.preventDefault();
+				event.stopPropagation();
+				const badge = document.querySelector(&#39;#lovable-badge&#39;);
+				if (badge) {
+					badge.classList.add(&#39;closing&#39;);
+					setTimeout(function() {
+						if (badge) {
+							badge.style.display = &#39;none&#39;;
+						}
+					}, 240);
+				}
+			});
+		}
+	})();
+    </script>
+  </body>
 </html>
