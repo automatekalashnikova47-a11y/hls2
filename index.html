@@ -73,7 +73,8 @@ html,body{height:100%;background:var(--bg);color:#fff;font-family:'Rajdhani',sys
 .s47-error-desc{font-family:'Courier New',Courier,monospace;font-size:clamp(10px,1.5vw,12px);color:var(--dim);max-width:min(90vw,340px);line-height:1.5;margin-bottom:20px}
 .s47-retry{background:var(--blue);color:#fff;border:0;padding:8px 24px;border-radius:4px;font:700 14px 'Rajdhani',system-ui,sans-serif;letter-spacing:1.5px;cursor:pointer;transition:all .2s ease;box-shadow:0 4px 15px rgba(65,105,225,.2)}
 .s47-retry:hover{transform:translateY(-2px);background:#5c85ff;box-shadow:0 6px 20px rgba(65,105,225,.35)}
-@media (prefers-reduced-motion:reduce){.s47-dot{animation:none;opacity:.7}.s47-screen,.s47-fs,.s47-retry{transition:none}}
+@keyframes pulse-soft{0%,80%,100%{opacity:.25}40%{opacity:.9}}
+@media (prefers-reduced-motion:reduce){.s47-dot{animation-name:pulse-soft}.s47-screen,.s47-fs,.s47-retry{transition:none}}
 </style>
 </head>
 <body>
